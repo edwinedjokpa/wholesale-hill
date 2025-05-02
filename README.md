@@ -184,7 +184,7 @@ mutation DeleteDepartment {
 
 ## ☁️ Deployment
 
-- 🔗 **Live API on Render:** [https://wholesale-hill-1usd.onrender.com/graphql](https://wholesale-hill-1usd.onrender.com/graphql)
+- 🔗 **Live API on Render:** [https://wholesale-hill-fzq6.onrender.com/graphql](https://wholesale-hill-fzq6.onrender.com/graphql)
 
 ---
 
