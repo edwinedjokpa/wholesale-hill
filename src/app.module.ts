@@ -12,8 +12,9 @@ import { DepartmentModule } from './department/department.module';
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
-      // autoSchemaFile: 'src/schema.gql',
       autoSchemaFile: true,
+      playground: true,
+      introspection: true,
       context: ({ req }) => ({ req }),
       driver: ApolloDriver,
     }),

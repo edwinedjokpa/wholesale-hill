@@ -33,7 +33,7 @@ This project is a backend API built with **NestJS**, **GraphQL**, **TypeORM**, *
 
 ````bash
 git clone https://github.com/edwinedjokpa/wholesale-hill.git
-cd your-repo-name
+cd wholesale-hill
 ```
 
 ### 2. Install Dependencies
@@ -184,7 +184,7 @@ mutation DeleteDepartment {
 
 ## ☁️ Deployment
 
-- 🔗 **Live API on Render:** [https://your-api-name.onrender.com/graphql](https://your-api-name.onrender.com/graphql)
+- 🔗 **Live API on Render:** [https://wholesale-hill-1usd.onrender.com/graphql](https://wholesale-hill-1usd.onrender.com/graphql)
 
 ---
 
