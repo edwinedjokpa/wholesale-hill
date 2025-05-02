@@ -23,6 +23,7 @@ async function bootstrap() {
   );
   app.useGlobalFilters(new GraphQLExceptionFilter());
 
+  app.enableShutdownHooks();
   await app.listen(PORT);
 }
 bootstrap();
