@@ -22,7 +22,7 @@ This project is a backend API built with **NestJS**, **GraphQL**, **TypeORM**, *
 - **GraphQL (code-first with @nestjs/graphql)**
 - **TypeORM**
 - **PostgreSQL**
-- **JWT Auth (Passport.js)**
+- **JWT Auth (jsonwebtoken)**
 - **Deployed on Render**
 
 ---
@@ -61,10 +61,26 @@ The GraphQL Playground will be available at:
 
 ## 🔐 Authentication
 
+### Registration
+
+```graphql
+mutation Register {
+  register(
+    input: {
+      username: "john78"
+      email: "johndoe@gmail.com"
+      password: "johnyuhugye"
+    }
+  ) {
+    message
+  }
+}
+```
+
 ### Login
 
 ```graphql
-mutation {
+mutation Login {
   login(input: { username: "admin", password: "password" }) {
     message
     data {
@@ -76,8 +92,27 @@ mutation {
 
 Use the returned `accessToken` in the `Authorization` header for protected routes:
 
-```json
+```plaintext
 Authorization: Bearer <your_token>
+```
+
+### Dashboard
+
+```graphql
+query Dashboard {
+  dashboard {
+    message
+    data {
+      user {
+        id
+        username
+        email
+        createdAt
+        updatedAt
+      }
+    }
+  }
+}
 ```
 
 ---
