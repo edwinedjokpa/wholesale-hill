@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { appConfig } from 'src/config';
+import { Department } from 'src/department/entities/department.entity';
+import { SubDepartment } from 'src/department/entities/sub-department.entity';
 import { User } from 'src/user/entities/user.entity';
 
 @Module({
@@ -14,9 +16,8 @@ import { User } from 'src/user/entities/user.entity';
       password: appConfig.DB_PASSWORD,
       database: appConfig.DB_DATABASE,
       ssl: appConfig.DB_SSL_MODE ? { rejectUnauthorized: false } : false,
-      autoLoadEntities: true,
-      entities: [User],
-      synchronize: true,
+      entities: [User, Department, SubDepartment],
+      synchronize: false,
       logging: false,
       migrations: ['../database/migrations/*{.ts,.js}'],
     }),

@@ -31,7 +31,7 @@ This project is a backend API built with **NestJS**, **GraphQL**, **TypeORM**, *
 
 ### 1. Clone the Repository
 
-````bash
+```bash
 git clone https://github.com/edwinedjokpa/wholesale-hill.git
 cd wholesale-hill
 ```
@@ -40,15 +40,27 @@ cd wholesale-hill
 
 ```bash
 npm install
-````
+```
 
-### 3. Configure Environment Variables
+### 3. Create a PostgreSQL DB
 
-Create a `.env` file:
+```plaintext
+e.g wholesale_hill
+```
 
-copy .env.example to .env
+### 4. Copy and Configure Environment Variables
 
-### 4. Run the Project
+```plaintext
+cp .env.example .env
+```
+
+### 5. Run Migrations
+
+```bash
+npm run migration:run
+```
+
+### 6. Run the Project
 
 ```bash
 npm run start:dev

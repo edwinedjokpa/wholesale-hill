@@ -1,43 +1,44 @@
-import { ArgumentsHost, Catch, HttpException } from '@nestjs/common';
-import { Response, Request } from 'express';
+import { Catch, HttpException, Logger } from '@nestjs/common';
 import { GqlExceptionFilter } from '@nestjs/graphql';
 import { GraphQLError } from 'graphql';
+import { appConfig } from 'src/config';
 
 @Catch()
 export class GraphQLExceptionFilter implements GqlExceptionFilter {
-  catch(exception: unknown, host: ArgumentsHost) {
-    const ctx = host.switchToHttp();
-    const response = ctx.getResponse<Response>();
-    const request = ctx.getRequest<Request>();
+  private readonly logger = new Logger(GraphQLExceptionFilter.name);
 
-    const isGraphQL = request.url.includes('/graphql');
-
+  catch(exception: unknown) {
     const status =
-      exception instanceof HttpException ? Number(exception.getStatus()) : 500;
-    const message =
-      exception instanceof HttpException
-        ? exception.getResponse()
-        : 'Internal Server Error';
+      exception instanceof HttpException ? exception.getStatus() : 500;
 
-    if (isGraphQL) {
-      throw new GraphQLError(
-        typeof message === 'string'
-          ? message
-          : (message as any).message || 'GraphQL Error',
-        {
-          extensions: {
-            code: 'INTERNAL_SERVER_ERROR',
-            details: message,
-          },
-        },
-      );
+    let message: string | object;
+    if (exception instanceof HttpException) {
+      message = exception.getResponse();
     } else {
-      response.status(status).json({
-        statusCode: status,
-        timestamp: new Date().toISOString(),
-        path: request.url,
-        message,
-      });
+      message = 'Internal Server Error';
     }
+
+    if (appConfig.NODE_ENV !== 'production') {
+      this.logger.error(
+        'Error details:',
+        exception instanceof Error ? exception.stack : message,
+      );
+    }
+
+    throw new GraphQLError(
+      typeof message === 'string'
+        ? message
+        : (message as any).message || 'GraphQL Error',
+      {
+        extensions: {
+          code:
+            exception instanceof HttpException
+              ? 'HTTP_EXCEPTION'
+              : 'INTERNAL_SERVER_ERROR',
+          details: message,
+          statusCode: status,
+        },
+      },
+    );
   }
 }
