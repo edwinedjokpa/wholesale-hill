@@ -54,11 +54,31 @@ e.g wholesale_hill
 cp .env.example .env
 ```
 
-### 5. Run Migrations
+### 5. Migrations
+
+- Running Migrations
 
 ```bash
 npm run migration:run
 ```
+
+This will execute all pending migrations on your database, ensuring that your schema is up-to-date.
+
+- Creating Migration
+
+```bash
+npm run migration:create --name=CreateTableName
+```
+
+This will generate a new migration file in the src/database/migrations/ directory.
+
+- Reverting Migrations
+
+```bash
+npm run migration:revert
+```
+
+This will undo the most recent migration you used
 
 ### 6. Run the Project
 
