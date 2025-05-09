@@ -1,4 +1,9 @@
-import { Catch, HttpException, ArgumentsHost } from '@nestjs/common';
+import {
+  Catch,
+  HttpException,
+  ArgumentsHost,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { GqlExceptionFilter, GqlArgumentsHost } from '@nestjs/graphql';
 import { GraphQLError } from 'graphql';
 import { Request } from 'express';
@@ -14,31 +19,21 @@ type ExceptionResponse = {
 @Catch()
 export class GraphQLExceptionFilter implements GqlExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
-    // First check if this is a GraphQL request
-    const isGraphQL = this.isGraphQLRequest(host);
+    // Determine if this is a GraphQL request
+    const gqlHost = GqlArgumentsHost.create(host);
+    const isGraphQLRequest = !!gqlHost.getInfo();
 
-    if (isGraphQL) {
-      return this.handleGraphQLError(exception, host);
+    if (!isGraphQLRequest) {
+      throw new InternalServerErrorException(
+        'This endpoint only accepts GraphQL requests',
+      );
     }
 
-    // If it's not GraphQL, let NestJS handle it normally
-    return exception;
-  }
-
-  private isGraphQLRequest(host: ArgumentsHost): boolean {
-    try {
-      const gqlHost = GqlArgumentsHost.create(host);
-      const info = gqlHost.getInfo();
-      return !!info;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  private handleGraphQLError(exception: unknown, host: ArgumentsHost) {
+    // Extract request context
     const ctx = host.switchToHttp();
     const request = ctx.getRequest<Request>();
 
+    // Handle different types of exceptions
     if (exception instanceof GraphQLError) {
       return exception;
     }

@@ -20,6 +20,8 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
+
+  // Register both filters globally
   app.useGlobalFilters(new GraphQLExceptionFilter());
 
   app.enableShutdownHooks();
